@@ -1,14 +1,12 @@
-import { Component } from "react";
+const FeedbackOptions = ({ good, neutral, bad }) => {
+  return (
+    <>
+      <h2>Please leave feedback</h2>
+      <button onClick={() => good()}>Good</button>
+      <button onClick={() => neutral()}>Neutral</button>
+      <button onClick={() => bad()}>Bad</button>
+    </>
+  );
+};
 
-export default class FeedbackOptions extends Component {
-  render() {
-    return (
-      <>
-        <h2>Please leave feedback</h2>
-        <button onClick={() => this.props.good()}>Good</button>
-        <button onClick={() => this.props.neutral()}>Neutral</button>
-        <button onClick={() => this.props.bad()}>Bad</button>
-      </>
-    )
-  }
-}
+export default FeedbackOptions;

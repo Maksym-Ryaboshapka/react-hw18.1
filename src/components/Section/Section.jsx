@@ -1,61 +1,41 @@
-import { Component } from "react";
+import { useState } from "react";
 
 import FeedbackOptions from "../FeedbackOptions/FeedbackOptions";
 import Statistics from "../Statistics/Statistics";
 
-export default class Section extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+const Section = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const countTotalFeedback = () => {
+    return good + neutral + bad;
   };
 
-  addGood = () => {
-    this.setState((prevState) => ({
-      good: prevState.good + 1,
-    }));
+  const countPositiveFeedbackPercentage = () => {
+    return Math.round((good / countTotalFeedback()) * 100);
   };
 
-  addNeutral = () => {
-    this.setState((prevState) => ({
-      neutral: prevState.neutral + 1,
-    }));
-  };
+  return (
+    <>
+      <FeedbackOptions
+        good={() => setGood((prevState) => prevState + 1)}
+        neutral={() => setNeutral((prevState) => prevState + 1)}
+        bad={() => setBad((prevState) => prevState + 1)}
+      />
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        total={countTotalFeedback()}
+        positivePercentage={
+          isNaN(countPositiveFeedbackPercentage())
+            ? 0
+            : countPositiveFeedbackPercentage()
+        }
+      />
+    </>
+  );
+};
 
-  addBad = () => {
-    this.setState((prevState) => ({
-      bad: prevState.bad + 1,
-    }));
-  };
-
-  countTotalFeedback = () => {
-    return this.state.good + this.state.neutral + this.state.bad;
-  };
-
-  countPositiveFeedbackPercentage = () => {
-    return Math.round((this.state.good / this.countTotalFeedback()) * 100);
-  };
-
-  render() {
-    return (
-      <>
-        <FeedbackOptions
-          good={this.addGood}
-          neutral={this.addNeutral}
-          bad={this.addBad}
-        />
-        <Statistics
-          good={this.state.good}
-          neutral={this.state.neutral}
-          bad={this.state.bad}
-          total={this.countTotalFeedback()}
-          positivePercentage={
-            isNaN(this.countPositiveFeedbackPercentage())
-              ? 0
-              : this.countPositiveFeedbackPercentage()
-          }
-        />
-      </>
-    );
-  }
-}
+export default Section;
